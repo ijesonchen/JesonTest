@@ -59,6 +59,7 @@ Sample Output
 
 #include <vector>
 #include <iostream>
+#include "patMain.h"
 
 using namespace std;
 
@@ -67,25 +68,50 @@ class A1003Graph
 private:
 	struct Edge
 	{
-		int t = -1; // to indx;
+		int v = -1; // dst node
 		int w = -1; // weight
+
+		Edge(int _v, int _w) : v(_v), w(_w) {};
 	};
 
-	struct Dist
+	struct Node
 	{
-		int l = -1; // length of SP
-		int n = -1; // count of SP
-		int t = -1; // max team
+		int t = 0; // team count
+		int s = 0; // length of SP
+		int c = 0; // count of SP
+		int r = 0; // total rescue team
+		Node() {};
 	};
 
-	vector<int> teams;
-	vector<vector<Edge>> adj;
+	vector<Node> nodes;
+	vector<vector<Edge>> adjs;
 	int src = -1;
 	int dst = -1;
 public:
+	void Read(void)
+	{
+		int n, m, a;
+		cin >> n >> m >> src >> dst;
+		nodes.assign(n, Node());
+		adjs.assign(n, vector<Edge>());
+		for (int i = 0; i < n; ++i)
+		{
+			cin >> a;
+			nodes[i].t = a;
+		}
+		int u, v, w;
+		for (int i = 0; i < m; ++i)
+		{
+			cin >> u >> v >> w;
+			adjs[u].emplace_back(v, w);
+			adjs[v].emplace_back(u, w);
+		}
+	}
 };
 
 void A1003(void)
 {
-	;
+	RedirCin("data\\A1003-1.TXT");
+	A1003Graph g;
+	g.Read();
 }

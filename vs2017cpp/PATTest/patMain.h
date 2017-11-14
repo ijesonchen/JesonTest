@@ -1,6 +1,10 @@
 #ifndef patMain_h__
 #define patMain_h__
 
+#include <string>
+
+void RedirCin(const std::string& fn);
+
 // pta: pintia.cn
 void StartSelfTest(void);
 inline void PtaTest(void)
