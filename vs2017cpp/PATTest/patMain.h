@@ -1,6 +1,13 @@
 #ifndef patMain_h__
 #define patMain_h__
 
+// pta: pintia.cn
+void StartSelfTest(void);
+inline void PtaTest(void)
+{
+	StartSelfTest();
+}
+
 void B1003(void);
 
 inline void Basic(void)
@@ -8,9 +15,12 @@ inline void Basic(void)
 	B1003();
 }
 
+void A1002(void);
+void A1003(void);
+
 inline void Advanced(void)
 {
-
+	A1003();
 }
 
 inline void Top(void)
@@ -20,7 +30,7 @@ inline void Top(void)
 
 inline void Main(void)
 {
-	Basic();
+	Advanced();
 }
 
 

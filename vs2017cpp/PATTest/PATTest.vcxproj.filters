@@ -24,6 +24,15 @@
     <ClCompile Include="B1003.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
+    <ClCompile Include="StartSelfTest.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="A1002.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="A1003.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="patMain.h">

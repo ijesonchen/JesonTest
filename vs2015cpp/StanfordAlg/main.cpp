@@ -9,6 +9,7 @@ void QuickSortPartition(void);
 void Contraction(void);
 void SCC(void);
 void DijkstraShortestPath(void);
+void DijkstraShortestPath2(void);
 void MedianHeap(void);
 void TwoSum(void);
 void Greedy(void);
@@ -31,7 +32,7 @@ void main(void)
 {
 	auto tp = chrono::high_resolution_clock::now();
 
-	Test2Sat();
+	DijkstraShortestPath2();
 
 	TimeCost(tp);
 	cout << "enter to exit." << endl;

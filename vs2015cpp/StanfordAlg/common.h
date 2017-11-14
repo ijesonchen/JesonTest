@@ -45,6 +45,20 @@ inline void Tick(void)
 inline float Tock(void)
 	{ return std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::high_resolution_clock::now() - g_tp).count(); }
 
+// load test case file: beaunus/stanford-algs@github
+struct TestCaseInfo 
+{
+	std::string stem;
+	std::string input;
+	std::string result;
+
+	TestCaseInfo(const std::string& i, const std::string& r) :input(i), result(r) {}
+	TestCaseInfo(const std::string& i) :input(i) {}
+};
+std::vector<TestCaseInfo> BeaunusTestCase(const std::string tcPath, const std::string& root = ".");
+
+void FinalTestResult(int n);
+
 // ReturnExecutor var([&](){ f; })
 #define ReturnGuard(name, func)	\
 		ReturnExecutor name([&](){ func; });

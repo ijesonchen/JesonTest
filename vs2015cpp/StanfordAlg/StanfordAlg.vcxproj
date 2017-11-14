@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp" />
+    <ClCompile Include="DijkstraShortestPath2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NodeHeap.cpp" />
     <ClCompile Include="TestCLRS22.cpp" />
