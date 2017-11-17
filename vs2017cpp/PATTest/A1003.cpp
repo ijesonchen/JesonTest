@@ -88,26 +88,28 @@ private:
 	int src = -1;
 	int dst = -1;
 public:
-	void Read(void)
-	{
-		int n, m, a;
-		cin >> n >> m >> src >> dst;
-		nodes.assign(n, Node());
-		adjs.assign(n, vector<Edge>());
-		for (int i = 0; i < n; ++i)
-		{
-			cin >> a;
-			nodes[i].t = a;
-		}
-		int u, v, w;
-		for (int i = 0; i < m; ++i)
-		{
-			cin >> u >> v >> w;
-			adjs[u].emplace_back(v, w);
-			adjs[v].emplace_back(u, w);
-		}
-	}
+	void Read(void);
 };
+
+void A1003Graph::Read(void)
+{
+	int n, m, a;
+	cin >> n >> m >> src >> dst;
+	nodes.assign(n, Node());
+	adjs.assign(n, vector<Edge>());
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> a;
+		nodes[i].t = a;
+	}
+	int u, v, w;
+	for (int i = 0; i < m; ++i)
+	{
+		cin >> u >> v >> w;
+		adjs[u].emplace_back(v, w);
+		adjs[v].emplace_back(u, w);
+	}
+}
 
 void A1003(void)
 {
