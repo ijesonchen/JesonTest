@@ -45,13 +45,13 @@ private:
 		Node() {};
 	};
 
-	vector<Node> dist;
+	vector<Node> nodes;
 	vector<vector<Edge>> adjs;
 	int SelectNearest(void);
 	void UpdateNearest(int n);
 	void PrintDist(void)
 	{
-		for (auto& i : dist)
+		for (auto& i : nodes)
 		{
 			if (i.s == DSP2MaxLen)
 			{
@@ -61,12 +61,12 @@ private:
 			cout << i.s << " ";
 		}
 		cout << endl;
-		for (auto& i : dist)
+		for (auto& i : nodes)
 		{
 			cout << i.v << " ";
 		}
 		cout << endl;
-		for (auto& i : dist)
+		for (auto& i : nodes)
 		{
 			if (i.p == -1)
 			{
@@ -88,7 +88,7 @@ void DSP2G::LoadFile(const std::string& fn)
 	fstream f(fn);
 	EXPECT_TRUE((bool)f);
 	adjs.assign(DSP2NodeCount, vector<Edge>());
-	dist.assign(DSP2NodeCount, Node());
+	nodes.assign(DSP2NodeCount, Node());
 	string s;
 	char ch;
 	int u, v, w;
@@ -108,10 +108,10 @@ void DSP2G::UpdateNearest(int n)
 {
 	// update adjs of u: 
 	// smaller SP dist? -> SP dist, parent
-	auto& u = dist[n];
+	auto& u = nodes[n];
 	for (auto& vEdge : adjs[n])
 	{
-		auto& vNode = dist[vEdge.v];
+		auto& vNode = nodes[vEdge.v];
 		if (vEdge.w + u.s < vNode.s)
 		{
 			vNode.s = vEdge.w + u.s;
@@ -125,10 +125,10 @@ int DSP2G::SelectNearest(void)
 	// select unvisited, nearest node (min SP dist)
 	int sel = -1;
 	int len = DSP2MaxLen + 1;
-	auto length = dist.size();
+	auto length = nodes.size();
 	for (size_t i = 0; i < length; i++)
 	{
-		auto& node = dist[i];
+		auto& node = nodes[i];
 		if (node.v)
 		{
 			continue;
@@ -144,13 +144,13 @@ int DSP2G::SelectNearest(void)
 
 void DSP2G::ShortestPath(void)
 {
-	auto& src = dist[DSP2Src];
+	auto& src = nodes[DSP2Src];
 	src.p = -1;
 	src.s = 0;
 	int sel = -1;
 	while ((sel = SelectNearest()) != -1)
 	{
-		auto& nSel = dist[sel];
+		auto& nSel = nodes[sel];
 		nSel.v = true;
 		UpdateNearest(sel);
 //		PrintDist();
@@ -161,10 +161,10 @@ string DSP2G::Result(void)
 {
 	stringstream ss;
 	auto len = DSP2Targets.size();
-	ss << dist[DSP2Targets.front()].s;
+	ss << nodes[DSP2Targets.front()].s;
 	for (size_t i = 1; i < len; i++)
 	{
-		ss << "," << dist[DSP2Targets[i]].s;
+		ss << "," << nodes[DSP2Targets[i]].s;
 	}
 	return ss.str();
 }

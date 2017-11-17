@@ -63,6 +63,8 @@ Sample Output
 
 using namespace std;
 
+const int A1003MaxLength = 1000000000;
+
 class A1003Graph
 {
 private:
@@ -76,10 +78,11 @@ private:
 
 	struct Node
 	{
-		int t = 0; // team count
-		int s = 0; // length of SP
-		int c = 0; // count of SP
-		int r = 0; // total rescue team
+		int team = 0; // team count
+		int spDist = A1003MaxLength; // length of SP
+		int spCnt = 0; // count of SP
+		int totalRescue = 0; // total rescue team
+		bool visited = false; // visited in BFS
 		Node() {};
 	};
 
@@ -89,6 +92,9 @@ private:
 	int dst = -1;
 public:
 	void Read(void);
+	void Calc(void);
+	int SelectNearest(void);
+	void UpdateNearest(int ui);
 };
 
 void A1003Graph::Read(void)
@@ -100,7 +106,7 @@ void A1003Graph::Read(void)
 	for (int i = 0; i < n; ++i)
 	{
 		cin >> a;
-		nodes[i].t = a;
+		nodes[i].team = a;
 	}
 	int u, v, w;
 	for (int i = 0; i < m; ++i)
@@ -111,9 +117,73 @@ void A1003Graph::Read(void)
 	}
 }
 
+void A1003Graph::Calc(void)
+{
+	auto& u = nodes[src];
+	u.spDist = 0;
+	u.totalRescue = u.team;
+	int sel = -1;
+	while ((sel = SelectNearest()) != -1)
+	{
+		nodes[sel].visited = true;
+		UpdateNearest(sel);
+	}
+}
+
+
+int A1003Graph::SelectNearest(void)
+{
+	auto length = nodes.size();
+	auto minLen = A1003MaxLength;
+	auto sel = -1;
+	for (size_t i = 0; i < length; i++)
+	{
+		auto& u = nodes[i];
+		if (u.visited)
+		{
+			continue;
+		}
+		if (u.spDist < minLen)
+		{
+			minLen = u.spDist;
+			sel = i;
+		}
+	}
+	return sel;
+}
+
+
+void A1003Graph::UpdateNearest(int ui)
+{
+	auto& u = nodes[ui];
+	for (auto& e : adjs[ui])
+	{
+		auto& v = nodes[e.v];
+		auto spdist = u.spDist + e.w;
+		if (spdist < v.spDist)
+		{
+			v.spDist = spdist;
+			v.spCnt = u.spCnt;
+			v.totalRescue = u.totalRescue + v.team;
+		}
+		else if (spdist == v.spDist)
+		{
+			++v.spCnt;
+			auto totalRescue = u.totalRescue + v.totalRescue;
+			if (v.totalRescue < totalRescue)
+			{
+				v.totalRescue = totalRescue;
+			}
+		}
+	}
+}
+
+
+
 void A1003(void)
 {
 	RedirCin("data\\A1003-1.TXT");
 	A1003Graph g;
 	g.Read();
+	g.Calc();
 }
