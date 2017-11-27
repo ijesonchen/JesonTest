@@ -14,7 +14,10 @@ alg3: dp+Dijkstra
 		if new v.l > old v.l: ignore
 		if new v.l = old v.l: dup path, add n, replace t if bigger
 		if new v.l < old v.l: shorter path, relpace l,n,t
-	
+	point 5/6 score 22/25;bad 2
+	错误原因：dup path分支代码错误：n+1，应为+=
+
+
 1003. Emergency (25)
 As an emergency rescue team leader of a city, you are given a special 
 map of your country. The map shows several scattered cities connected 
@@ -63,7 +66,7 @@ Sample Output
 
 using namespace std;
 
-const int A1003MaxLength = 1000000000;
+const long long A1003MaxLength = 0x7fffffffffffffff;
 
 class A1003Graph
 {
@@ -79,7 +82,7 @@ private:
 	struct Node
 	{
 		int team = 0; // team count
-		int spDist = A1003MaxLength; // length of SP
+		long long spDist = A1003MaxLength; // length of SP
 		int spCnt = 0; // count of SP
 		int totalRescue = 0; // total rescue team
 		bool visited = false; // visited in BFS
@@ -121,6 +124,7 @@ void A1003Graph::Calc(void)
 {
 	auto& u = nodes[src];
 	u.spDist = 0;
+	u.spCnt = 1;
 	u.totalRescue = u.team;
 	int sel = -1;
 	while ((sel = SelectNearest()) != -1)
@@ -128,6 +132,8 @@ void A1003Graph::Calc(void)
 		nodes[sel].visited = true;
 		UpdateNearest(sel);
 	}
+	auto& v = nodes[dst];
+	cout << v.spCnt << " " << v.totalRescue << endl;
 }
 
 
@@ -146,7 +152,7 @@ int A1003Graph::SelectNearest(void)
 		if (u.spDist < minLen)
 		{
 			minLen = u.spDist;
-			sel = i;
+			sel = (int)i;
 		}
 	}
 	return sel;
@@ -159,6 +165,10 @@ void A1003Graph::UpdateNearest(int ui)
 	for (auto& e : adjs[ui])
 	{
 		auto& v = nodes[e.v];
+		if (v.visited)
+		{
+			continue;
+		}
 		auto spdist = u.spDist + e.w;
 		if (spdist < v.spDist)
 		{
@@ -168,8 +178,8 @@ void A1003Graph::UpdateNearest(int ui)
 		}
 		else if (spdist == v.spDist)
 		{
-			++v.spCnt;
-			auto totalRescue = u.totalRescue + v.totalRescue;
+			v.spCnt += u.spCnt;
+			auto totalRescue = u.totalRescue + v.team;
 			if (v.totalRescue < totalRescue)
 			{
 				v.totalRescue = totalRescue;
@@ -178,12 +188,20 @@ void A1003Graph::UpdateNearest(int ui)
 	}
 }
 
+void A1003(const string& fn)
+{
+	cout << fn << endl;
+	RedirCin(fn);
+	A1003Graph g;
+	g.Read();
+	g.Calc();
+}
 
 
 void A1003(void)
 {
-	RedirCin("data\\A1003-1.TXT");
-	A1003Graph g;
-	g.Read();
-	g.Calc();
+	A1003("data\\A1003-1.TXT"); // 2 4
+	A1003("data\\A1003-2.TXT"); // 3 23
+	A1003("data\\A1003-3.TXT"); // 3 34
+	A1003("data\\A1003-4.TXT"); // 3 8
 }

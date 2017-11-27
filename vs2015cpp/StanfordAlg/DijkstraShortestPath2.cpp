@@ -112,6 +112,10 @@ void DSP2G::UpdateNearest(int n)
 	for (auto& vEdge : adjs[n])
 	{
 		auto& vNode = nodes[vEdge.v];
+		if (vNode.v)
+		{
+			continue;
+		}
 		if (vEdge.w + u.s < vNode.s)
 		{
 			vNode.s = vEdge.w + u.s;
